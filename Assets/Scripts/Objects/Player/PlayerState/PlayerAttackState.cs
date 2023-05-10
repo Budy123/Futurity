@@ -16,8 +16,6 @@ public class PlayerAttackState : UnitState<PlayerController>
 		/*if(cam == null)	
 			cam = Camera.main.GetComponent<CameraController>();*/
 
-		pc.isAttacking = true;
-
 		pc.animator.SetBool("NormalAttack", true);
 		pc.animator.SetTrigger("AttackTrigger");
 		FDebug.Log("Attack IN");
@@ -52,7 +50,6 @@ public class PlayerAttackState : UnitState<PlayerController>
 		FDebug.Log($"{animEventEffect.effect.name}가 존재합니다.");
 		attackNode.effectPoolManager.DeactiveObject(animEventEffect.effect);
 		pc.attackCollider.radiusCollider.enabled = false;
-		pc.isAttacking = false;
 		pc.animator.SetBool("NormalAttack", false);
 	}
 

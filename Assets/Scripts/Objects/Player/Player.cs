@@ -51,4 +51,9 @@ public class Player : UnitBase
 	{
 		throw new System.NotImplementedException();
 	}
+
+	public void SetSpeed(float speed)
+	{
+		this.speed = speed;
+	}
 }

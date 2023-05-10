@@ -8,8 +8,6 @@ public class PlayerAttackState_Normal : PlayerAttackState
 	public override void Begin(PlayerController pc)
 	{
 		base.Begin(pc);
-		pc.isComboState = true;
-		pc.comboCurTime = 0f;
 
 		AudioManager.instance.PlayOneShot(attackNode.attackSound, pc.transform.position);
 

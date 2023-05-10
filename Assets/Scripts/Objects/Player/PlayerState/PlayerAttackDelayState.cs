@@ -37,7 +37,6 @@ public class PlayerAttackDelayState : UnitState<PlayerController>
 		if (currentTime > attackNode.skillSpeed * 0.3f)
 		{
 			unit.curNode = unit.comboTree.top;
-			unit.isComboState = false;
 			unit.ChangeState(PlayerState.Idle);
 		}
 		currentTime += Time.deltaTime;

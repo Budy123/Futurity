@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
@@ -46,8 +47,8 @@ public class PlayerController : UnitFSM<PlayerController>, IFSM
 	public Tree comboTree;
 	public RadiusCapsuleCollider attackCollider;
 
-	[HideInInspector] public bool isComboState = false;
-	[HideInInspector] public bool isAttacking = false;
+	// input
+	public bool specialIsReleased = false;
 
 	//임시
 	public GameObject glove;
@@ -56,6 +57,12 @@ public class PlayerController : UnitFSM<PlayerController>, IFSM
 	public FMODUnity.EventReference dash;
 	public FMODUnity.EventReference hitMelee;
 	public FMODUnity.EventReference hitRanged;
+
+	// coroutine 
+	public bool isRush;
+
+	// math
+	private readonly int Meter = 100; // centimeter 단위
 
 	private void Start()
 	{
@@ -139,6 +146,10 @@ public class PlayerController : UnitFSM<PlayerController>, IFSM
 				}
 			}
 		}
+		else if(context.canceled)
+		{
+			specialIsReleased = true;
+		}
 	}
 
 	public AttackNode FindInput(PlayerInput input)
@@ -151,5 +162,33 @@ public class PlayerController : UnitFSM<PlayerController>, IFSM
 		}
 
 		return node;
+	}
+
+	float testCurTime = 0;
+
+	public IEnumerator ChargedAttackProc(float attackST, float attackLengthMark)
+	{
+		while (true)
+		{
+			if (isRush)
+			{
+				Vector3 targetPos = transform.position + transform.forward * attackLengthMark;
+				testCurTime = 0;
+				while (transform.position.magnitude >= targetPos.magnitude)
+				{
+					// 한 프레임 당 이동 속도 계산(m/Frame)
+					float moveSpeed = (attackLengthMark * Time.deltaTime) / (Meter * curNode.attackDelay);
+
+					transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime / curNode.attackDelay);
+
+					testCurTime += Time.deltaTime;
+
+					yield return null;
+				}
+
+				transform.position = targetPos;
+			}
+			yield return null;
+		}
 	}
 }
