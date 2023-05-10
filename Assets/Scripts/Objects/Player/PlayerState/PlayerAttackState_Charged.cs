@@ -5,6 +5,7 @@ using UnityEngine;
 [FSMState((int)PlayerController.PlayerState.ChargedAttack)]
 public class PlayerAttackState_Charged : PlayerAttackState
 {
+	private float playerOriginalSpeed;
 	public override void Begin(PlayerController pc)
 	{
 		base.Begin(pc);

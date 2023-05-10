@@ -17,7 +17,10 @@ public class PlayerAttackState : UnitState<PlayerController>
 			cam = Camera.main.GetComponent<CameraController>();*/
 
 		pc.isAttacking = true;
-		pc.animator.SetTrigger("MeleeT");
+
+		pc.animator.SetBool("NormalAttack", true);
+		pc.animator.SetTrigger("AttackTrigger");
+		FDebug.Log("Attack IN");
 		pc.animator.SetFloat("Melee", pc.curNode.animFloat);
 		pc.curNode.Copy(pc.curNode);
 		attackNode = pc.curNode;
@@ -50,6 +53,7 @@ public class PlayerAttackState : UnitState<PlayerController>
 		attackNode.effectPoolManager.DeactiveObject(animEventEffect.effect);
 		pc.attackCollider.radiusCollider.enabled = false;
 		pc.isAttacking = false;
+		pc.animator.SetBool("NormalAttack", false);
 	}
 
 	public override void OnTriggerEnter(PlayerController unit, Collider other)

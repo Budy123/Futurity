@@ -17,12 +17,6 @@ public class Player : UnitBase
 		pc = GetComponent<PlayerController>();
 	}
 
-	private void Update()
-	{
-		if (pc.isComboState)
-			pc.ComboTimer();
-	}
-
 	public override void Attack(UnitBase target)
 	{
 		target.Hit(this, GetDamage());

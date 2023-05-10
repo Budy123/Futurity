@@ -46,8 +46,6 @@ public class PlayerController : UnitFSM<PlayerController>, IFSM
 	public Tree comboTree;
 	public RadiusCapsuleCollider attackCollider;
 
-	[SerializeField] private float comboEndTime = 2.0f;
-	[HideInInspector]public float comboCurTime = 0f;
 	[HideInInspector] public bool isComboState = false;
 	[HideInInspector] public bool isAttacking = false;
 
@@ -104,9 +102,10 @@ public class PlayerController : UnitFSM<PlayerController>, IFSM
 
 	public void OnNormalAttack(InputAction.CallbackContext context)
 	{
-		if (context.performed)
+		if (context.started)
 		{
 			AttackNode node = FindInput(PlayerInput.NormalAttack);
+			FDebug.Log("In");
 			if (node != null && !IsCurrentState(PlayerState.Attack))
 			{
 				curNode = node;
@@ -140,7 +139,6 @@ public class PlayerController : UnitFSM<PlayerController>, IFSM
 				}
 			}
 		}
-
 	}
 
 	public AttackNode FindInput(PlayerInput input)
@@ -153,15 +151,5 @@ public class PlayerController : UnitFSM<PlayerController>, IFSM
 		}
 
 		return node;
-	}
-
-	public void ComboTimer()
-	{
-		comboCurTime += Time.deltaTime;
-		if (comboCurTime > comboEndTime)
-		{
-			curNode = comboTree.top;
-			isComboState = false;
-		}
 	}
 }

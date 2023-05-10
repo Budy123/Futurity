@@ -1,6 +1,8 @@
 ﻿
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.XR;
 using static PlayerController;
 
 [FSMState((int)PlayerState.AttackDelay)]
@@ -11,7 +13,7 @@ public class PlayerAttackDelayState : UnitState<PlayerController>
 
 	public override void Begin(PlayerController unit)
 	{
-		attackNode = attackNode = unit.curNode;
+		attackNode = unit.curNode;
 		currentTime = 0;
 	}
 
@@ -34,6 +36,8 @@ public class PlayerAttackDelayState : UnitState<PlayerController>
 	{
 		if (currentTime > attackNode.skillSpeed * 0.3f)
 		{
+			unit.curNode = unit.comboTree.top;
+			unit.isComboState = false;
 			unit.ChangeState(PlayerState.Idle);
 		}
 		currentTime += Time.deltaTime;
